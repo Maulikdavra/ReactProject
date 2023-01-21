@@ -18,7 +18,7 @@ export const Carousel = () => {
          */
         const fetchBooks = async () => {
             const baseUrl: string = "http://localhost:8080/api/books";
-            const url: string = "${baseUrl}?page=0&size=9";
+            const url: string = `${baseUrl}?page=0&size=9`;
             const response = await fetch(url);
 
             if (!response.ok) {
@@ -43,7 +43,7 @@ export const Carousel = () => {
                     copiesAvailable: responseData[key].copiesAvailable,
                     category: responseData[key].category,
                     img: responseData[key].img,
-                })
+                });
             }
 
             setBooks(loadedBooks);
