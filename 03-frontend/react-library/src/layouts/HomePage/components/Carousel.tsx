@@ -4,7 +4,7 @@ import BookModel from "../../../Models/BookModel";
 
 export const Carousel = () => {
 
-    const [Books, setBooks] = useState<BookModel[]>([]);
+    const [books, setBooks] = useState<BookModel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
 
@@ -95,7 +95,7 @@ export const Carousel = () => {
                 <div className='carousel-inner'>
                     <div className='carousel-item active'>
                         <div className='row d-flex justify-content-center align-items-center'>
-                            {Books.slice(0, 3).map(book => (
+                            {books.slice(0, 3).map(book => (
                                 /* 
                                  * {book} on below line holds all the information about the book like img, title, author and {book} variable
                                  * is created in ReturnBook component, basically {book} fetches informaiton from API with the help of props 
@@ -107,14 +107,14 @@ export const Carousel = () => {
                     </div>
                     <div className='carousel-item'>
                         <div className='row d-flex justify-content-center align-items-center'>
-                            {Books.slice(3, 6).map(book => (
+                            {books.slice(3, 6).map(book => (
                                 <ReturnBook book={book} key={book.id} />
                             ))}
                         </div>
                     </div>
                     <div className='carousel-item'>
                         <div className='row d-flex justify-content-center align-items-center'>
-                            {Books.slice(6, 9).map(book => (
+                            {books.slice(6, 9).map(book => (
                                 <ReturnBook book={book} key={book.id} />
                             ))}
                         </div>
@@ -135,7 +135,7 @@ export const Carousel = () => {
             {/* Mobile */}
             <div className='d-lg-none mt-3'>
                 <div className='row d-flex justify-content-center align-items-center'>
-                    <ReturnBook book={Books[7]} key={Books[7].id}/>
+                    <ReturnBook book={books[7]} key={books[7].id}/>
                 </div>
             </div>
             <div className='homepage-carousel-title mt-3'>

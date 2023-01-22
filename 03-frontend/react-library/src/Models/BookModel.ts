@@ -11,12 +11,12 @@ class BookModel{
     author?: string; // "?" means this variable can be null
     description?: string;
     copies?: number;
-    copiesAvailable?: string;
+    copiesAvailable?: number;
     category?: string;
     img?: string;
 
     constructor(id: number, title: string, author: string,  description: string, 
-                copies: number, copiesAvailable: string, category: string, img: string){
+                copies: number, copiesAvailable: number, category: string, img: string){
                     this.id = id;
                     this.title = title;
                     this.author = author;
