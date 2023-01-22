@@ -21,7 +21,7 @@ export const Carousel = () => {
             const url: string = `${baseUrl}?page=0&size=9`;
             const response = await fetch(url);
 
-            if (!response.ok) {
+            if (!response.ok) { 
                 throw new Error('Something went wrong, please try again later!');
             }
 
@@ -67,7 +67,7 @@ export const Carousel = () => {
 
     }, []);
 
-    if (isLoading) {
+    if (isLoading) { 
         return (
             <div className=" container m-5">
                 <p>Loading..</p>
