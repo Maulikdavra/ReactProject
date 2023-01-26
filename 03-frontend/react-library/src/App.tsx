@@ -3,13 +3,15 @@ import './App.css';
 import { HomePage } from './layouts/HomePage/HomePage';
 import { Footer } from './layouts/NavbarAndFooter/Footer';
 import { Navbar } from './layouts/NavbarAndFooter/Navbar';
+import { SearchBooksPage } from './layouts/SearchBookPage/SearchBooksPage';
 
 export const  App = () => {
   return (
     // adding bootstrap navigation bar via component
     <div>
       <Navbar/>
-      <HomePage/>
+      {/*<HomePage/>*/}
+      <SearchBooksPage/>
       <Footer/>
     </div>
   );
