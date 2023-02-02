@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import BookModel from "../../Models/BookModel";
+import ReviewModel from "../../Models/ReviewModel";
 import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { StarsReviews } from "../Utils/StarsReviews";
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
+import { LatestReviews } from "./LatestReviews";
 
 export const BookCheckoutPage = () => {
 
     const [book, setBook] = useState<BookModel>();
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
+
+    // Review  state
+    const [reviews, setReviews] = useState<ReviewModel[]>([])
+    const [totalStar, setTotalStar] = useState(0);
+    const [isLoadingReview, setIsLoadingReview] = useState(true);
 
     // Below line will grab the third index from the url;  basically anything after "checkout/..."
     const bookId = (window.location.pathname).split('/')[2];
@@ -66,7 +73,47 @@ export const BookCheckoutPage = () => {
 
     }, []);
 
-    if (isLoading) {
+    useEffect(() => {
+        const fetchBookReviews = async () => {
+
+            const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByBookId?bookId=${bookId}`;
+            const responseReviews = await fetch(reviewUrl);
+            if (!responseReviews.ok) {
+                throw new Error('Something went wrong, Sorry!')
+            }
+
+            const responseJsonReviews = await responseReviews.json();
+            const responseData = responseJsonReviews._embedded.reviews;
+            const loadedReviews: ReviewModel[] = [];
+            let weightStarReviews: number = 0;
+
+            for (const key in responseData) {
+                loadedReviews.push({
+                    id: responseData[key].id,
+                    userEmail: responseData[key].userEmail,
+                    date: responseData[key].date,
+                    rating: responseData[key].rating,
+                    book_id: responseData[key].bookId,
+                    reviewDescription: responseData[key].reviewDescription,
+                });
+                weightStarReviews = weightStarReviews + responseData[key].rating;
+            }
+            if (loadedReviews) {
+                const round = (Math.round((weightStarReviews / loadedReviews.length) * 2) / 2).toFixed(1);
+                setTotalStar(Number(round));
+            }
+
+            setReviews(loadedReviews);
+            setIsLoadingReview(false);
+        };
+
+        fetchBookReviews().catch((error: any) => {
+            setIsLoading(false);
+            setHttpError(error.message);
+        })
+    }, []);
+
+    if (isLoading || isLoadingReview) {
         return (
             <SpinnerLoading />
         )
@@ -105,6 +152,7 @@ export const BookCheckoutPage = () => {
                     <CheckoutAndReviewBox book={book} mobil={false} />
                 </div>
                 <hr />
+                <LatestReviews reviews={[]} bookId={book?.id} mobile={false} />
             </div>
 
             {/* Mobile Version */}
@@ -126,7 +174,8 @@ export const BookCheckoutPage = () => {
                     </div>
                 </div>
                 <CheckoutAndReviewBox book={book} mobil={true} />
-                <hr/>
+                <hr />
+                <LatestReviews reviews={[]} bookId={book?.id} mobile={true} />
             </div>
         </div>
     );
