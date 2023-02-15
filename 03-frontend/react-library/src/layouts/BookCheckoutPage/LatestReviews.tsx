@@ -2,9 +2,7 @@ import { Link } from "react-router-dom";
 import ReviewModel from "../../Models/ReviewModel";
 import { Review } from "../Utils/Review";
 
-export const LatestReviews: React.FC<{
-    reviews: ReviewModel[], bookId: number | undefined, mobile: boolean
-}> = (props) => {
+export const LatestReviews: React.FC<{reviews: ReviewModel[], bookId: number | undefined, mobile: boolean}> = (props) => {
 
     return (
         <div className={props.mobile ? 'mt-3' : 'row mt-5'}>

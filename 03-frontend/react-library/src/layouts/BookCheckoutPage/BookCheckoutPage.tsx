@@ -152,7 +152,7 @@ export const BookCheckoutPage = () => {
                     <CheckoutAndReviewBox book={book} mobil={false} />
                 </div>
                 <hr />
-                <LatestReviews reviews={[]} bookId={book?.id} mobile={false} />
+                <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} />
             </div>
 
             {/* Mobile Version */}
@@ -175,7 +175,7 @@ export const BookCheckoutPage = () => {
                 </div>
                 <CheckoutAndReviewBox book={book} mobil={true} />
                 <hr />
-                <LatestReviews reviews={[]} bookId={book?.id} mobile={true} />
+                <LatestReviews reviews={reviews} bookId={book?.id} mobile={true} />
             </div>
         </div>
     );

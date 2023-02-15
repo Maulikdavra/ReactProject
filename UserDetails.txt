@@ -1,0 +1,8 @@
+User details 
+
+go to webiste: https://dev-89466154-admin.okta.com/admin/users
+
+-> Get the user details 
+	- for example 
+	  username: omdavra@gmail.com
+	  password: test123!
