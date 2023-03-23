@@ -18,7 +18,7 @@ export const LatestReviews: React.FC<{reviews: ReviewModel[], bookId: number | u
 
                         <div className='m-3'>
                             <Link type='button' className='btn main-color btn-md text-white'
-                                to='#'>
+                                to={`/reviewlist/${props.bookId}`}>
                                 Reach all reviews.
                             </Link>
                         </div>
