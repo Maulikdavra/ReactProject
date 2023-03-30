@@ -20,7 +20,7 @@ public class History {
     @Column(name = "checkout_date")
     private String checkoutDate;
 
-    @Column(name = "return_date")
+    @Column(name = "returned_date")
     private String returnDate;
 
     @Column(name = "title")
