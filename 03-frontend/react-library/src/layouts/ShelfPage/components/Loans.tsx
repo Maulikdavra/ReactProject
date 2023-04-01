@@ -204,7 +204,7 @@ export const Loans = () => {
                                                 }
                                                 <div className="list-group mt-3">
                                                     <button className="list-group-item list-group-item-action"
-                                                        aria-current="true" data-bs-toggle="mobilemodal"
+                                                        aria-current="true" data-bs-toggle="modal"
                                                         data-bs-target={`#mobilemodal${shelfCurrentLoans.book.id}`}>
                                                         Manage Loan
                                                     </button>
