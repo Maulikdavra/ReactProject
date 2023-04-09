@@ -25,6 +25,10 @@ export const AdminMessages = () => {
     // Recall useEffect
     const [btnSubmit, setBtnSubmit] = useState(false);
 
+    /*
+     * Below useEffect fetches all the user messages specifically for admin
+     * The url in the below useEffect comes from meesageRepository (springboot)
+     */
     useEffect(() => {
         const fetchUserMessages = async () => {
             if (authState && authState.isAuthenticated) {
@@ -68,6 +72,11 @@ export const AdminMessages = () => {
         );
     }
 
+    /*
+     * Below submitResponseToQuestion function is responsible for adding comment to user message by admin
+     * We can verify the output by navigating to MySql workbench or checking meesages responses (when one,login website with user credentials)
+     * Here the string (paramter) carries the actual meesage inputed by admin
+     */
     async function submitResponseToQuestion(id: number, response: string){
         const url = `http://localhost:8080/api/messages/secure/admin/message`;
         if(authState && authState?.isAuthenticated && id !== null && response !== ''){
@@ -90,6 +99,9 @@ export const AdminMessages = () => {
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+    /*
+     * Admin will see the list of messgaes from user if there's any left answered.
+     */
     return (
         <div className='mt-3'>
             {messages.length > 0 ? 

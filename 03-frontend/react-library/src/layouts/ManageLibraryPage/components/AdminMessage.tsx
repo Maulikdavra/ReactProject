@@ -6,6 +6,10 @@ export const AdminMessage: React.FC<{ message: MessageModel, submitResponseToQue
     const [displayWarning, setDisplayWarning] = useState(false);
     const [response, setResponse] = useState('');    
 
+    /*
+     * Below submitBtn will send message id and response(carries actual message from admin) to function: submitResponseToQuestion, 
+     * residing in AdminMessages class.
+     */
     function submitBtn(){
         if(props.message.id !== null && response !== ''){
             props.submitResponseToQuestion(props.message.id, response);
@@ -15,6 +19,10 @@ export const AdminMessage: React.FC<{ message: MessageModel, submitResponseToQue
         }
     }
 
+    /*
+     * This is a React component that displays a message card with a title, user email, question, and a form for submitting a response. 
+     * The component uses props to pass the message data and handles the form submission using state and event handlers
+     */
     return (
         <div key={props.message.id}>
             <div className='card mt-2 shadow p-3 bg-body rounded'>

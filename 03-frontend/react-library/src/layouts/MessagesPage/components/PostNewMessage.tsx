@@ -2,6 +2,22 @@ import { useOktaAuth } from '@okta/okta-react';
 import { useState } from 'react';
 import MessageModel from '../../../Models/MessageModel';
 
+/*
+ * PostNewMessage component displays a form for submitting a new question to the admin
+ * for the authenticated user.
+ *
+ * The component imports the useOktaAuth hook, useState hook, and MessageModel class.
+ *
+ * The component uses the useState hook to manage the state of title, question, displayWarning,
+ * and displaySuccess, which is used to display the success and error messages on the UI.
+ *
+ * The component uses the async function submitNewQuestion to send a POST request to the server
+ * with the new question data, using the Okta authentication access token.
+ *
+ * @returns {JSX.Element} Returns a card element that displays a form for submitting a new
+ * question to the admin for the authenticated user.
+ */
+
 export const PostNewMessage = () => {
 
     const { authState } = useOktaAuth();
@@ -10,6 +26,12 @@ export const PostNewMessage = () => {
     const [displayWarning, setDisplayWarning] = useState(false);
     const [displaySuccess, setDisplaySuccess] = useState(false);
 
+    /*
+     * Below is the async function responsible for submitting an question, iff the user is authenticated.
+     * After user submits the questions, we are adding the details of the question to MessageModel.ts(Model folder)
+     * The reason behind storing the user question to MessageModel is so that we can later convert into JSON format and send the request to springboot
+     * After the submitting question we are setting the questions feilds to null
+     */
     async function submitNewQuestion(){
         const url = `http://localhost:8080/api/messages/secure/add/message`;
         if(authState?.isAuthenticated && title !== '' && question !== ''){
@@ -36,6 +58,10 @@ export const PostNewMessage = () => {
         }
     }
 
+    /*
+     * Below is the advanced HTML code for displaying a form to submit any questions regarding book to admin
+     * The moment user clicks on the submit button, user will be redirect to submitNewQuestion function where the request will be proceess towards springboot and eventually saved in database.
+     */
     return (
         <div className='card mt-3'>
             <div className='card-header'>

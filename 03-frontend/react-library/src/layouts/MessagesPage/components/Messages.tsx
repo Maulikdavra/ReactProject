@@ -4,6 +4,26 @@ import MessageModel from "../../../Models/MessageModel";
 import { SpinnerLoading } from "../../Utils/SpinnerLoading";
 import { Pagination } from "../../Utils/Pagination";
 
+/*
+ * Messages component displays a list of messages, each containing a question and
+ * its corresponding answer, if available, for the authenticated user.
+ *
+ * The component imports the MessageModel, SpinnerLoading, and Pagination components.
+ *
+ * The component uses the useEffect hook to fetch messages for the authenticated user
+ * from the server using the Okta authentication access token.
+ *
+ * The component uses the useState hook to manage the state of messages, isLoadingMessages,
+ * httpError, messagePerPage, currentPage, and totalPages, which is used to display the
+ * pagination on the UI.
+ *
+ * The component uses the paginate function to set the currentPage state when a user clicks
+ * on the pagination button.
+ *
+ * @returns {JSX.Element} Returns a div element that displays a list of messages for the
+ * authenticated user, with pagination if necessary.
+ */
+
 export const Messages = () => {
 
     const { authState } = useOktaAuth();
@@ -18,6 +38,10 @@ export const Messages = () => {
     const [ currentPage, setCurrentPage ] = useState(1);
     const [ totalPages, setTotalPages ] = useState(0);
 
+    /*
+     * Below is the code to fetch all the messages uploaded by admin and other users. 
+     * The url in the below is designed in MessageRepository(Springbot)
+     */
     useEffect(() => {
         const fetchUserMessages = async () => {
             if(authState && authState?.isAuthenticated){
@@ -63,6 +87,10 @@ export const Messages = () => {
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+    /*
+     * Below is the customized HTML code specifically designed for fetching all the required information from api response(embedded from useState: message)
+     * We have included an React conditional statment where user will be able to see meesages uploaded by admin and if not then a lovely short message.
+     */
     return (
         <div className='mt-2'>
             {messages.length > 0 ? 

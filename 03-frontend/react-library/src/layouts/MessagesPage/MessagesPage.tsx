@@ -2,6 +2,20 @@ import { useState } from 'react';
 import { Messages } from './components/Messages';
 import { PostNewMessage } from './components/PostNewMessage';
 
+/*
+ * MessagesPage component displays the user interface for submitting a question
+ * and viewing question-answer response/pending messages.
+ *
+ * The component imports two other components, PostNewMessage and Messages, to display
+ * the corresponding tabs on the UI.
+ *
+ * The component uses the useState hook to manage the state of messagesClick,
+ * which is toggled by clicking the two tabs in the navigation bar.
+ *
+ * @returns {JSX.Element} Returns a container div with tabs for submitting a question and
+ * viewing question-answer response/pending messages.
+ */
+
 export const MessagesPage = () => {
     
     const [messagesClick, setMessagesClick] = useState(false);
