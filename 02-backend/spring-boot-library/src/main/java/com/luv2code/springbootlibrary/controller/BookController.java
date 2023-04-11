@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:3000") //React application will be able to call this controller without getting any error
+@CrossOrigin("https://localhost:3000") //React application will be able to call this controller without getting any error
 @RestController
 @RequestMapping("api/books")
 public class BookController {
