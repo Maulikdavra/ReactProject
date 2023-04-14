@@ -4,7 +4,8 @@ import lombok.Data;
 import java.util.Optional;
 
  /*
-  * The ReviewRequest is going to be the object that the client side; react, is going to send to us the back the object
+  * The idea behind creating this ReviewRequest is to store and process the information(objects) that react-frontend is going to send spring-boot when making an api call.
+  * This is the best way to pass information(object's holding value) to our controller and service.
   */
 @Data
 public class ReviewRequest {

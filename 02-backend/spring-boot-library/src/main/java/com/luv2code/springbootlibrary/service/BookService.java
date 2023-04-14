@@ -3,8 +3,10 @@ package com.luv2code.springbootlibrary.service;
 import com.luv2code.springbootlibrary.dao.BookRepository;
 import com.luv2code.springbootlibrary.dao.CheckoutRepository;
 import com.luv2code.springbootlibrary.dao.HistoryRepository;
+import com.luv2code.springbootlibrary.dao.PaymentRepository;
 import com.luv2code.springbootlibrary.entity.Book;
 import com.luv2code.springbootlibrary.entity.History;
+import com.luv2code.springbootlibrary.entity.Payment;
 import com.luv2code.springbootlibrary.entity.checkout;
 import com.luv2code.springbootlibrary.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class BookService {
     @Autowired
     private HistoryRepository historyRepository;
 
+    @Autowired
+    private PaymentRepository paymentRepository;
+
     public Book checkoutBook(String userEmail, Long bookId) throws Exception {
 
         Optional<Book> book = bookRepository.findById(bookId);
@@ -39,6 +44,36 @@ public class BookService {
         // Here we are making a validation to check out only one book at a time
         if (book.isEmpty() || validateCheckout != null || book.get().getCopiesAvailable() <= 0) {
             throw new Exception("Book doesn't exit or already checked out by user");
+        }
+
+        /*
+         * The idea behind below code is to check is the user has checked out books which are past due, in that case we are restricting user by checking out other books
+         * So basically we are directing user to pay the pending fees first(which we implemented in returnBook method)
+         * we will eventually store the user information to Payment class for identifying if the user owes any amount to LUV2CODE
+         */
+        List<checkout> currentBooksCheckedOut = checkoutRepository.findBooksByUserEmail(userEmail);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        boolean bookNeedsReturned = false;
+        for(checkout checkout: currentBooksCheckedOut){
+            Date d1 = sdf.parse(checkout.getReturnDate());
+            Date d2 = sdf.parse(LocalDate.now().toString());
+            TimeUnit time = TimeUnit.DAYS;
+            double differenceInTime = time.convert(d1.getTime()-d2.getTime(), TimeUnit.MILLISECONDS);
+            if(differenceInTime < 0){
+                bookNeedsReturned = true;
+                break;
+            }
+        }
+        Payment userPayment = paymentRepository.findByUserEmail(userEmail);
+        if(userPayment != null && userPayment.getAmount() > 0 || (userPayment != null && bookNeedsReturned)){
+            throw new Exception("you have outstanding fees, please pay the fees first by returning the book you owe to LUV2READ");
+        }
+
+        if(userPayment == null){
+            Payment payment = new Payment();
+            payment.setAmount(00.00);
+            payment.setUserEmail(userEmail);
+            paymentRepository.save(payment);
         }
 
         book.get().setCopiesAvailable(book.get().getCopiesAvailable() - 1);
@@ -84,7 +119,7 @@ public class BookService {
             bookIdList.add(i.getBookId());
         }
 
-        // Need to select all the books based on the book ID's
+        // Now we have all the books based on the book ID's
         List<Book> books = bookRepository.findBookByBookIds(bookIdList);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -111,13 +146,30 @@ public class BookService {
         Optional<Book> book = bookRepository.findById(bookId);
         checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
 
-        if (!book.isPresent() || validateCheckout == null) {
+        if (book.isEmpty() || validateCheckout == null) {
             throw new Exception("Book does not exist or not checked out by user");
         }
 
         book.get().setCopiesAvailable(book.get().getCopiesAvailable() + 1);
 
         bookRepository.save(book.get());
+
+        /*
+         * When a user tries to return a book which is past due, we are directing user to pay late fees first before they return the book.
+         * Once the user pays the fees off, the book will be returned and our database will be updated accordingly.
+         * Also, if the user has cleared their late fees, they will be able to check out other books.
+         */
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d1 = sdf.parse(validateCheckout.getReturnDate());
+        Date d2 = sdf.parse(LocalDate.now().toString());
+        TimeUnit time = TimeUnit.DAYS;
+        double differenceInTime = time.convert(d1.getTime()-d2.getTime(), TimeUnit.MILLISECONDS);
+        if(differenceInTime < 0){
+            Payment payment = paymentRepository.findByUserEmail(userEmail);
+            payment.setAmount(payment.getAmount() + (differenceInTime * -1));
+            paymentRepository.save(payment);
+        }
+
         checkoutRepository.deleteById(validateCheckout.getId());
 
         // Saving all the history(information) of book to HistoryRepository.

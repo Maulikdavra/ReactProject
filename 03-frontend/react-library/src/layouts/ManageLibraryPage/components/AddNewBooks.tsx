@@ -63,7 +63,7 @@ export const AddNewBook = () => {
      * After submitting a successful request we are setting all the required feilds to null/empty.
      */
     async function submitNewBook(){
-        const url = `http://localhost:8080/api/admin/secure/add/book`;
+        const url = `${process.env.REACT_APP_API}/admin/secure/add/book`;
         if(authState?.isAuthenticated && title !== '' && author !== '' && category !== 'Category' && description !== '' && copies >= 0){
             const book: AddBookRequest = new AddBookRequest(title, author, description, copies, category);
             book.img = selectedImage;
