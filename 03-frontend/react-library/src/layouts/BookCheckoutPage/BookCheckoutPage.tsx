@@ -28,9 +28,12 @@ export const BookCheckoutPage = () => {
     const [currentLoansCount, setCurrentLoansCount] = useState(0);
     const [isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] = useState(true);
 
-    // Is Book Check out!!
+    // Is Book Checked out!!
     const [isCheckedOut, setIsCheckedOut] = useState(false);
     const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
+
+    // Payment
+    const [displayError, setDisplayError] = useState(false);
 
     // Below line will grab the third index from the url;  basically anything after "checkout/..."
     const bookId = (window.location.pathname).split('/')[2];
@@ -232,8 +235,10 @@ export const BookCheckoutPage = () => {
         };
         const checkoutResponse = await fetch(url, requestOptions);
         if(!checkoutResponse.ok){
+            setDisplayError(true);
             throw new Error('Something is wrong!');
         }
+        setDisplayError(false);
         setIsCheckedOut(true);
     }
 
@@ -264,6 +269,10 @@ export const BookCheckoutPage = () => {
         <div>
             {/* Web Version */}
             <div className="container d-none d-lg-block">
+                {displayError && <div className="alert alert-danger mt-3" role="alert">
+                    PlEASE PAY OUTSTANDING FEES FOR LATE BOOK!
+                </div>  
+                }
                 <div className="row mt-5">
                     <div className="col-sm-2 col-md-2">
                         {book?.img ?
@@ -292,6 +301,10 @@ export const BookCheckoutPage = () => {
 
             {/* Mobile Version */}
             <div className="container d-lg-none mt-5">
+                {displayError && <div className="alert alert-danger mt-3" role="alert">
+                    PLEASE PAY OUTSTANDING FEES FOR LATE BOOK!
+                </div>
+                }
                 <div className="d-flex justify-content-center alighn-items-center">
                     {book?.img ?
                         <img src={book?.img} width='226' height='349' alt='Book' />
