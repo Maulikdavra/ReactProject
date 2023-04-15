@@ -1,8 +1,8 @@
 User details 
 
-go to webiste: https://dev-89466154-admin.okta.com/admin/users
+okta webiste: https://dev-89466154-admin.okta.com/admin/users
 
--> Get the user details 
+-> Use the below user credentials to test wensite as an user. 
 	- for example 
-	  username: omdavra@gmail.com
+	  username: maulik.davra@icloud.com
 	  password: test123!
