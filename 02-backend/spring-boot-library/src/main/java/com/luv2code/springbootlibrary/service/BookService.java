@@ -58,7 +58,7 @@ public class BookService {
             Date d1 = sdf.parse(checkout.getReturnDate());
             Date d2 = sdf.parse(LocalDate.now().toString());
             TimeUnit time = TimeUnit.DAYS;
-            double differenceInTime = time.convert(d1.getTime()-d2.getTime(), TimeUnit.MILLISECONDS);
+            double differenceInTime = time.convert(d1.getTime() - d2.getTime(), TimeUnit.MILLISECONDS);
             if(differenceInTime < 0){
                 bookNeedsReturned = true;
                 break;

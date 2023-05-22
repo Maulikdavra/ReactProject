@@ -270,7 +270,7 @@ export const BookCheckoutPage = () => {
             {/* Web Version */}
             <div className="container d-none d-lg-block">
                 {displayError && <div className="alert alert-danger mt-3" role="alert">
-                    PlEASE PAY OUTSTANDING FEES FOR LATE BOOK!
+                    PLEASE PAY OUTSTANDING FEES FOR LATE BOOK!
                 </div>  
                 }
                 <div className="row mt-5">
